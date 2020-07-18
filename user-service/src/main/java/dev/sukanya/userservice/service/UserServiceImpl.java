@@ -1,6 +1,7 @@
 package dev.sukanya.userservice.service;
 
 import dev.sukanya.userservice.dto.UserDTO;
+import dev.sukanya.userservice.exceptions.UserAlreadyExistsException;
 import dev.sukanya.userservice.model.User;
 import dev.sukanya.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ public class UserServiceImpl implements UserService{
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Override
-    public User registerUser(UserDTO userDTO) throws Exception{
+    public User registerUser(UserDTO userDTO) throws UserAlreadyExistsException {
         if(userRepository.findByEmail(userDTO.getEmail())!=null){
             //User already exists, throw exception
-            throw new Exception("User already exists!");
+            throw new UserAlreadyExistsException("User already exists!");
         }
 
         User user = new User();

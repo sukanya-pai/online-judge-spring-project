@@ -3,6 +3,7 @@ package dev.sukanya.userservice.controller;
 import dev.sukanya.userservice.dto.ResponseDTO;
 import dev.sukanya.userservice.dto.UserDTO;
 import dev.sukanya.userservice.dto.UserResponseDTO;
+import dev.sukanya.userservice.exceptions.UserAlreadyExistsException;
 import dev.sukanya.userservice.model.User;
 import dev.sukanya.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,8 @@ public class RegistrationController {
         try{
             User user = userService.registerUser(userDTO);
             return new ResponseDTO<UserResponseDTO>(HttpStatus.OK, new UserResponseDTO(user.getId(),user.getEmail(),user.getFullName(),user.isActive()));
-        }catch(Exception e){
-            return new ResponseDTO<String>(HttpStatus.BAD_REQUEST, "User with email already exists!");
+        }catch(UserAlreadyExistsException e){
+            return new ResponseDTO<String>(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
     }
