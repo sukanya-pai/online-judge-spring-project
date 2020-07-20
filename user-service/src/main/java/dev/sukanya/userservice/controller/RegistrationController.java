@@ -6,6 +6,7 @@ import dev.sukanya.userservice.dto.UserResponseDTO;
 import dev.sukanya.userservice.exceptions.UserAlreadyExistsException;
 import dev.sukanya.userservice.model.User;
 import dev.sukanya.userservice.service.UserService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -45,6 +46,8 @@ public class RegistrationController {
 
     @GetMapping("/user/confirm")
     public ResponseDTO<UserResponseDTO> validateUser(@RequestParam String token){
-        userService.validateUserOnToken(token);
+        User user = userService.validateUserOnToken(token);
+
+        return new ResponseDTO<UserResponseDTO>(HttpStatus.OK,new UserResponseDTO(user.getId(),user.getEmail(),user.getFullName(),user.isActive()));
     }
 }
