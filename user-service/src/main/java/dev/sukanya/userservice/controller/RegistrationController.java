@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -43,5 +41,10 @@ public class RegistrationController {
             return new ResponseDTO<String>(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
+    }
+
+    @GetMapping("/user/confirm")
+    public ResponseDTO<UserResponseDTO> validateUser(@RequestParam String token){
+        userService.validateUserOnToken(token);
     }
 }
